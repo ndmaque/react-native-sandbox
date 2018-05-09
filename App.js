@@ -1,35 +1,39 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Constants } from 'expo';
-
-import { Rating } from 'react-native-elements';
+import { Rating, Button } from 'react-native-elements';
 
 export default class Test extends Component {
 
- constructor(props){
+  constructor(props){
     super(props);
-    this.state ={ myRating: 1};
+    this.state ={ myRate: 1, buttonVal: 'button default'};
+    this.setRate = this.setRate.bind(this);
+    this.setButton = this.setButton.bind(this);
+  }
 
- }
+  setRate(newRate) {
+    this.setState({myRate: newRate})
+  }
 
- _ratingCompleted(rating) {
-   console.log("Rating is: " + rating)
-   this.setState({
-     myRating: rating
-   });
-  //this.state.myRating = rating;
- }
+  setButton(title) {
+    console.log('button pressed');
+    this.setState({buttonVal: 'button was pressed'})
+  }
 
   render() {
-
-
     return (
-
       <View style={styles.container}>
-        <Text>Stuff {this.state.myRating}</Text>
+        <Button title='BUTTON'
+            onPress={this.setButton}
+        />
+      <Text>myRate: {this.state.myRate}</Text>
+        <Text>buttonVal: {this.state.buttonVal}</Text>
+
         <Rating
           showRating
-          onFinishRating={this._ratingCompleted}
+
+          onFinishRating={this.setRate}
           style={{ paddingVertical: 10 }}
         />
       </View>
