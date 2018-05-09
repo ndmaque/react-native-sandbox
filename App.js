@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Constants } from 'expo';
-import { Rating, Button } from 'react-native-elements';
+import { Rating, Button, CheckBox, Slider } from 'react-native-elements';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 export default class Test extends Component {
 
   constructor(props){
     super(props);
-    this.state ={ myRate: 1, buttonVal: 'button default'};
+    this.state ={
+      initialRate: 2,
+      myRate: 1,
+      buttonVal: 'button default',
+      'checked': true,
+      'value': 21
+    };
     this.setRate = this.setRate.bind(this);
     this.setButton = this.setButton.bind(this);
   }
@@ -17,7 +24,7 @@ export default class Test extends Component {
   }
 
   setButton(title) {
-    console.log('button pressed');
+    console.log('button pressed ');
     this.setState({buttonVal: 'button was pressed'})
   }
 
@@ -27,16 +34,28 @@ export default class Test extends Component {
         <Button title='BUTTON'
             onPress={this.setButton}
         />
-      <Text>myRate: {this.state.myRate}</Text>
+
+        <Text>myRate: {this.state.myRate}</Text>
         <Text>buttonVal: {this.state.buttonVal}</Text>
 
         <Rating
-          showRating
-
+          startingValue={this.state.initialRate}
+          fractions={1}
+          type='heart'
+          ratingCount={5}
           onFinishRating={this.setRate}
           style={{ paddingVertical: 10 }}
         />
-      </View>
+
+
+        <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+          <Slider
+            value={this.state.value}
+            onValueChange={(value) => this.setState({value})} />
+
+          <Text>Value: {this.state.value}</Text>
+        </View>
+    </View>
     );
   }
 }
