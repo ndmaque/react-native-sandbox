@@ -1,60 +1,103 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Picker } from 'react-native';
 import { Constants } from 'expo';
-import { Rating, Button, CheckBox, Slider } from 'react-native-elements';
+import { Rating, Button, Slider } from 'react-native-elements';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import {CheckBox} from 'react-native-check-box';
+import {RadioGroup, RadioButton} from 'react-native-flexi-radio-button'
+
 
 export default class Test extends Component {
 
   constructor(props){
     super(props);
     this.state ={
-      initialRate: 2,
-      myRate: 1,
-      buttonVal: 'button default',
-      'checked': true,
-      'value': 21
+      initialRate: null,
+      rating: null,
+      age: null,
+      size: null,
+      latLon: null,
+      image: null
     };
-    this.setRate = this.setRate.bind(this);
-    this.setButton = this.setButton.bind(this);
+    this.setRating = this.setRating.bind(this);
+    this.setAge = this.setAge.bind(this);
+    this.setSize = this.setSize.bind(this);
+    //this.setAge = this.setAge.bind(this);
+
   }
 
-  setRate(newRate) {
-    this.setState({myRate: newRate})
+  setAge(index, value){
+    this.setState({age: value})
   }
 
-  setButton(title) {
-    console.log('button pressed ');
-    this.setState({buttonVal: 'button was pressed'})
+  setRating(value) {
+    this.setState({rating: value})
+  }
+
+
+  setSize(index, value) {
+    this.setState({size: value})
+  }
+
+  saveTurd() {
+    const turd = {
+      age: this.state.age,
+      size: this.state.size,
+      rating: this.state.rating,
+      latLon: this.state.latLon,
+      image: this.state.image
+    }
+
+    console.log('saveTurd', turd);
+    // create a payload to post to REST
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Button title='BUTTON'
-            onPress={this.setButton}
-        />
-
-        <Text>myRate: {this.state.myRate}</Text>
-        <Text>buttonVal: {this.state.buttonVal}</Text>
-
         <Rating
           startingValue={this.state.initialRate}
           fractions={1}
           type='heart'
           ratingCount={5}
-          onFinishRating={this.setRate}
+          onFinishRating={this.setRating}
           style={{ paddingVertical: 10 }}
         />
+      <View>
+        <RadioGroup style={{flexDirection: 'row'}} onSelect={(index, value) => this.setAge(index, value)}>
+          <RadioButton value={'steaming'} >
+            <Text>Steaming</Text>
+          </RadioButton>
+          <RadioButton value={'recent'}>
+            <Text>Recent</Text>
+          </RadioButton>
+          <RadioButton value={'crusty'}>
+            <Text>Crusty</Text>
+          </RadioButton>
+        </RadioGroup>
+
+        <RadioGroup style={{flexDirection: 'row'}} onSelect={(index, value) => this.setSize(index, value)}>
+          <RadioButton value={'shihtzu'} >
+            <Text>Shitzu</Text>
+          </RadioButton>
+          <RadioButton value={'labradore'}>
+            <Text>Labrador</Text>
+          </RadioButton>
+          <RadioButton value={'dalmantion'}>
+            <Text>Dalmnation</Text>
+          </RadioButton>
+        </RadioGroup>
+      </View>
+
+      <Button
+        onPress={() => this.saveTurd()}
+        title="Save Turd"
+      />
+      <Text>Rating: {this.state.rating}</Text>
+      <Text>Age: {this.state.age}</Text>
+      <Text>Size: {this.state.size}</Text>
 
 
-        <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
-          <Slider
-            value={this.state.value}
-            onValueChange={(value) => this.setState({value})} />
-
-          <Text>Value: {this.state.value}</Text>
-        </View>
     </View>
     );
   }
@@ -62,23 +105,12 @@ export default class Test extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-  },
-  tite: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: '#34495e'
-  },
-  paragraph: {
-    margin: 10,
-    marginTop: 40,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  }
+ flex: 1,
+ paddingTop: 22
+},
+item: {
+  padding: 10,
+  fontSize: 18,
+  height: 44,
+},
 });
